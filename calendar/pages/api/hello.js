@@ -1,7 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import { loadGetInitialProps } from 'next/dist/next-server/lib/utils';
-
 const NoSQLClient = require('oracle-nosqldb').NoSQLClient;
 let result;
 
@@ -18,7 +16,7 @@ async function putRowsIntoCalendarTable(email) {
   const tableName = 'calendar';
   try {
       // Put the data into the calendar table.
-      let result = await client.put(tableName, { id: 1, name: 'Dylan', email: email });
+      let result = await client.put(tableName, { email: email });
       console.log('put: ' + result.success ? 'succeeded' : 'failed');
 
   } catch(error) {
@@ -30,8 +28,16 @@ async function getRowsFromCalendarTable({email}) {
   const tableName = 'calendar';
   try {
     // Get the data from the calendar table with the given email
-      result = await client.get(tableName, { id: 1, email: email });
-      
+    const e = new String(email)
+    if(email == 'undefined')
+    {
+      console.log('email is undefined')
+    }
+    else
+    {
+      result = await client.get(tableName, {email: email})
+    }
+    
   } catch(error) {
       console.log(error)
   }
@@ -45,19 +51,16 @@ export default (req, res) => {
   // Get the email that was passed in
   const { email } = req.query
 
-  try {
-
-    if(!email) { 
-      return res.status(400).json({message: 'email required'}) 
-    }
-
-  } catch(error)
+  if(email)
   {
-    console.log(error)
+    getRowsFromCalendarTable({email}).then( res.status(200).json({ name: result })  )
   }
 
-  
-  // getRowsFromCalendarTable(email)
+}
 
-  res.status(200).json({ name: getRowsFromCalendarTable(email) })
+// Add this to prevent it running multiple times and returning a warning of "API resolved without sending a response"
+export const config = {
+  api:{
+      externalResolver: true,
+  },
 }
