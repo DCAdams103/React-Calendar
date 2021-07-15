@@ -8,7 +8,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.1",
+    "firebase": "^8.7.1",
+    "firebase-admin": "^9.10.0",
     "next": "10.0.9",
+    "next-firebase-auth": "^0.13.2",
+    "next-images": "^1.8.1",
     "oracle-nosqldb": "^5.2.3",
     "react": "17.0.1",
     "react-dom": "17.0.1"
