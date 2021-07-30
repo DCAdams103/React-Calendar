@@ -6,7 +6,6 @@ import Image from 'next/image'
 import {Grid, Box, Button, TextField} from '@material-ui/core'
 import styles from '../styles/Home.module.css'
 import {withStyles} from '@material-ui/core'
-import logo from '../public/logo.png'
 
 
 import firebase from 'firebase'
@@ -55,7 +54,7 @@ export default function Home() {
   // })
 
   const [email, setEmail] = useState('')
-  const [pass, setPass] = useState('')
+  const [password, setPass] = useState('')
 
   const [error, setError] = useState(' ')
   const { authUser, loading } = useAuth()
@@ -82,7 +81,7 @@ export default function Home() {
         
         <div className={styles.borderBox} />
         
-        <TextField style={{paddingBottom:'2vh'}} id='filled-name' variant='filled' label='Email'
+        <TextField onChange={e => setEmail(e.target.value) } style={{paddingBottom:'2vh'}} id='filled-name' variant='filled' label='Email'
               inputProps={{
                 style: {
                   backgroundColor: 'rgba(0,0,0,.01)',
@@ -91,7 +90,7 @@ export default function Home() {
                 }
         }} />
 
-        <TextField style={{paddingBottom:'2vh'}} id='filled-name' variant='filled' label='Password'
+        <TextField onChange={e => setPass(e.target.value) } style={{paddingBottom:'2vh'}} id='filled-name' variant='filled' label='Password'
           inputProps={{ 
             style: {
               backgroundColor: 'rgba(0,0,0,.01)',
