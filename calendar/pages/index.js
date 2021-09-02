@@ -82,23 +82,26 @@ export default function Home() {
         <div className={styles.borderBox} />
         
         <TextField onChange={e => setEmail(e.target.value) } style={{paddingBottom:'2vh'}} id='filled-name' variant='filled' label='Email'
-              inputProps={{
-                style: {
-                  backgroundColor: 'rgba(0,0,0,.01)',
-                  border:'1px solid black',
-                  borderRadius: 3,
-                }
-        }} />
-
-        <TextField onChange={e => setPass(e.target.value) } style={{paddingBottom:'2vh'}} id='filled-name' variant='filled' label='Password'
-          inputProps={{ 
+          InputProps={{
             style: {
               backgroundColor: 'rgba(0,0,0,.01)',
               border:'1px solid black',
               borderRadius: 3,
-            }
-        }} />
+            },
+            disableUnderline: true,
+          }} 
+        />
 
+        <TextField onChange={e => setPass(e.target.value) } style={{paddingBottom:'2vh'}} id='filled-name' variant='filled' label='Password'
+          InputProps={{ 
+              style: {
+                backgroundColor: 'rgba(0,0,0,.01)',
+                border:'1px solid black',
+                borderRadius: 3,
+              },
+              disableUnderline: true,
+          }} 
+        />
         
         <StyledButton onClick={()=>{
           setError(null)

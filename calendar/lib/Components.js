@@ -1,9 +1,12 @@
-import {Box, Button, Modal, Dialog, DialogTitle, DialogContent, DialogContentText, TextField} from '@material-ui/core'
+import {Box, Button, Modal, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, ThemeProvider, createTheme} from '@material-ui/core'
 import {withStyles, makeStyles} from '@material-ui/core'
 import React, {useState} from 'react';
 import PropTypes from 'prop-types'
 import styles from '../styles/LoggedIn.module.css'
 import Image from 'next/image'
+
+
+{/* Styling for the Date Boxes using Material UI's Box component */}
 
 const DateBoxStyling = withStyles({
     root: {
@@ -20,6 +23,8 @@ const DateBoxStyling = withStyles({
     }
 })(Box)
 
+{/* Styling for the current date's box */}
+
 const DateBoxStylingToday = withStyles({
     root: {
         width: "100%",
@@ -35,21 +40,24 @@ const DateBoxStylingToday = withStyles({
     }
 })(Box)
 
+{/* A Styled Material UI Button component */}
+
 export const StyledButton = withStyles({
     root: {
         background: 'linear-gradient(45deg, rgba(106,61,210,.3), rgba(61,66,210,.3))',
         border: '1px solid rgba(0,0,0,.5)',
         borderRadius: '10px',
-        color: 'rgba(255,255,255,.8)',
+        color: 'rgba(255,255,255,1)',
         height: 48,
         padding: '0 30px',
         boxShadow: '0 3px 5px 2px rgba(0,0,0,.3)',
         minWidth: '10vw',
         marginBottom: '1vh',
-        marginTop: '85vh',
         display:'block',
     },
 })(Button);
+
+{/* Parent and Child components for event components */}
 
 function Parent(props) {
     const [lines, setLines] = useState([''])
@@ -66,6 +74,8 @@ function Child(props)
         {caption}
     </Button>
 }
+
+{/* Create styles for dialog components */}
 
 const useStyles = makeStyles(theme => ({
     dialogWrapped: {
@@ -87,10 +97,31 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
+{/* Create a theme to change the TextFields focus color */}
+
+const theme = createTheme({
+    overrides: {
+        MuiFormLabel: {
+            root: {
+                "&$focused": {
+                    color: 'white',
+                }
+            },
+
+            focused: {},
+        }
+    }
+})
+
+var todo = []
+
+{/* Functional component called when the plus is clicked to add an event */}
 function AddEventDialog(props)
 {
     const classes = useStyles();
     const { onClose, inputValue, open } = props
+    const [title, setTitle] = useState('')
+    const [desc, setDesc] = useState('')
 
     const handleClose = () => {
         onClose(inputValue)
@@ -100,11 +131,53 @@ function AddEventDialog(props)
         onClose(value)
     }
 
+
+    {/* Modal Pop-up to input event details */}
+
     return (
         <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open} classes={{ paper: classes.dialogWrapped}}>
+            
             <DialogTitle id='simple-dialog-title' classes={{ root: classes.dialogTitle}}>Add Event</DialogTitle>
             <DialogContent>
-                <TextField className={classes.textField} onChange={(e)=>inputValue(e.target.value)} id='standard-basic' label='test' InputProps={{ classes: { input: classes.input }}} InputLabelProps={{ className: classes.label }} />
+
+               <ThemeProvider theme={theme}>
+                    <TextField fullWidth onChange={ e => setTitle(e.target.value) } style={{paddingBottom:'2vh'}} id='filled-name' variant='filled' label='Event Title'
+                        InputProps={{ 
+                            style: {
+                                backgroundColor: 'rgba(0,0,0,.01)',
+                                border:'1px solid rgba(255,255,255,.5)',
+                                borderRadius: 10,
+                                boxShadow: '0 1px 3px 1px rgba(0,0,0,.3)',
+                                color: 'white',
+                            },
+                            disableUnderline: true,
+                        }}
+                        InputLabelProps={{ className: classes.label }}
+                    />
+
+                    <TextField fullWidth onChange={ e => setTitle(e.target.value) } style={{ paddingBottom:'2vh'}} id='filled-name' variant='filled' label='Event Description (Optional)'
+                        InputProps={{ 
+                            style: {
+                                backgroundColor: 'rgba(0,0,0,.01)',
+                                border:'1px solid rgba(255,255,255,.5)',
+                                borderRadius: 10,
+                                boxShadow: '0 1px 3px 1px rgba(0,0,0,.3)',
+                                color: 'white',
+                            },
+                            disableUnderline: true,
+                        }}
+                        InputLabelProps={{ className: classes.label }}
+                    />
+
+                    {/* Add Event and Cancel buttons */}
+                    <div style={{display: 'flex', flexDirection:'row', justifyContent: 'center'}}>
+                        <StyledButton style={{marginRight:'7%'}}>Add Event</StyledButton>
+                        <StyledButton onClick={handleClose}>Cancel</StyledButton>
+                    </div>
+
+               </ThemeProvider>
+               
+               
             </DialogContent>
         </Dialog>
     )
@@ -119,7 +192,6 @@ AddEventDialog.propTypes = {
 
 export function DateBox(props)
 {
-        var todo = []
 
         function addTodo(message)
         {
@@ -152,7 +224,9 @@ export function DateBox(props)
                             <Image src='/plus.png' width={16} height={16} alt="Add Event" />
                         </Box>
                     </p>
+                    
                     <Parent />
+
                 </DateBoxStylingToday>
             )
         }
@@ -170,7 +244,9 @@ export function DateBox(props)
                             <Image onClick={()=>{ handleOpen() }} src='/plus.png' width={16} height={16} alt="Add Event" />
                         </Box>
                     </p>
+
                     {todo}
+
                 </DateBoxStyling>
             )
         }
