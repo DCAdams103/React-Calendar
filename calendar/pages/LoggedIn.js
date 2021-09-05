@@ -14,6 +14,7 @@ export default function LoggedIn(){
 
     const { authUser, loading, signOut } = useAuth()
     const router = useRouter()
+    const [currentMonth, setCurrentMonth] = React.useState('0')
 
     {/* if Firebase's authUser changes, it indicates the user has logged out, then they're sent to the Home page */}
     useEffect(() => {
@@ -28,28 +29,44 @@ export default function LoggedIn(){
         "July", "August", "September", "October", "November", "December" ];
     const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     var fullDate = new Date()
-    var month = monthNames[fullDate.getMonth()]
+    var month = monthNames[fullDate.getMonth()] // Gives the string of the current month
+
     var shownMonth = fullDate.getMonth();
+    
     var day = fullDate.getDate()
     var year = fullDate.getFullYear();
 
     function leftNavClick()
     {
         shownMonth -= 1;
+        setCurrentMonth(shownMonth)
+        console.log(currentMonth)
         if(shownMonth < 0) { shownMonth = 11; }
         if (shownMonth > 11) { shownMonth = 0; }
     }
-    
-    {/* Variable where the DateBoxes are stored */}
+
+    var getDaysInMonth = function(month,year) {
+        
+       return new Date(year, month, 0).getDate();
+       
+    };
+
     var rows = []
     var isToday = false;
 
-    {/* For Loop to put set amount of DateBoxes into the variable 'rows' */}
-    for(var i = 1; i <= 31; i++ )
+    for(var i = 1; i <= 31; i++ ) // getDaysInMonth(shownMonth, year)
     {
         if(i == day) { isToday = true; } else { isToday = false; }
         rows.push(<DateBox number={i} highlight={isToday}></DateBox>)
     }
+
+    // useEffect(()=>{
+    //     console.log(year)
+    // {/* For Loop to put set amount of DateBoxes into the variable 'rows' */}
+    
+    // }, [currentMonth])
+
+    
 
     return(
         <Box display="flex" >
