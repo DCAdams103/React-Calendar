@@ -1,10 +1,9 @@
-import {Box, Button, Modal, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, ThemeProvider, createTheme} from '@material-ui/core'
+import {Box, Button, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, ThemeProvider, createTheme} from '@material-ui/core'
 import {withStyles, makeStyles} from '@material-ui/core'
 import React, {useState} from 'react';
 import PropTypes from 'prop-types'
 import styles from '../styles/LoggedIn.module.css'
 import Image from 'next/image'
-
 
 {/* Styling for the Date Boxes using Material UI's Box component */}
 
@@ -202,6 +201,7 @@ export function DateBox(props)
 
         const [open, setOpen] = useState(false)
         const [inputValue, setInputValue] = React.useState('')
+        const [hydrated, setHydrated] = useState(false);
 
         const handleOpen = () => {
             setOpen(true)
@@ -210,6 +210,14 @@ export function DateBox(props)
         const handleClose = (value) => {
             setOpen(false)
             setInputValue(value)
+        }
+
+        React.useEffect(() => {
+            setHydrated(true);
+        }, [])
+
+        if(!hydrated) {
+            return null;
         }
 
         if(props.highlight == true)

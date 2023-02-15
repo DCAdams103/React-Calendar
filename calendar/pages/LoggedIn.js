@@ -15,6 +15,7 @@ export default function LoggedIn(){
     const { authUser, loading, signOut } = useAuth()
     const router = useRouter()
     const [currentMonth, setCurrentMonth] = React.useState('0')
+    const [hydrated, setHydrated] = React.useState(false);
 
     {/* if Firebase's authUser changes, it indicates the user has logged out, then they're sent to the Home page */}
     useEffect(() => {
@@ -66,7 +67,13 @@ export default function LoggedIn(){
     
     // }, [currentMonth])
 
-    
+    React.useEffect(() => {
+        setHydrated(true);
+    }, []);
+
+    if(!hydrated){
+        return null;
+    }
 
     return(
         <Box display="flex" >
